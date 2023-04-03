@@ -16,7 +16,7 @@ public class Signal {
     private String takeProfit;
     private String stopLoss;
     private boolean closed;
-    private boolean wasSuccess;
+    private boolean wasSuccessful;
 
     protected Signal() {}
 
@@ -27,7 +27,7 @@ public class Signal {
                   String takeProfit,
                   String stopLoss,
                   boolean closed,
-                  boolean wasSuccess) {
+                  boolean wasSuccessful) {
         this.id = id;
         this.unixTime = unixTime;
         this.asset = asset;
@@ -35,7 +35,7 @@ public class Signal {
         this.takeProfit = takeProfit;
         this.stopLoss = stopLoss;
         this.closed = closed;
-        this.wasSuccess = wasSuccess;
+        this.wasSuccessful = wasSuccessful;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Signal {
                 ", takeProfit='" + takeProfit + '\'' +
                 ", stopLoss='" + stopLoss + '\'' +
                 ", closed=" + closed +
-                ", wasSuccess=" + wasSuccess +
+                ", wasSuccess=" + wasSuccessful +
                 '}';
     }
 }

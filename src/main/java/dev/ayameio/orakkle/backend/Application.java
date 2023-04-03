@@ -49,7 +49,7 @@ public class Application {
 
 			log.info("Successful signals found with findByWasSuccess(true):");
 			log.info("--------------------------------------------");
-			repository.findByWasSuccess(true).forEach(item -> {
+			repository.findByWasSuccessful(true).forEach(item -> {
 				log.info(item.toString());
 			});
 
@@ -57,7 +57,7 @@ public class Application {
 
 			log.info("Unsuccessful signals found with findByWasSuccess(false):");
 			log.info("--------------------------------------------");
-			repository.findByWasSuccess(false).forEach(item -> {
+			repository.findByWasSuccessful(false).forEach(item -> {
 				log.info(item.toString());
 			});
 

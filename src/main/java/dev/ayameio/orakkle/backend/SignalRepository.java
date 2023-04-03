@@ -10,6 +10,6 @@ import java.util.List;
 public interface SignalRepository extends PagingAndSortingRepository<Signal, Long>, CrudRepository<Signal, Long> {
     List<Signal> findByAsset(String asset);
     Signal findById(long id);
-    List<Signal> findByWasSuccess(boolean wasSuccess);
+    List<Signal> findByWasSuccessful(boolean wasSuccessful);
     List<Signal> findByClosed(boolean closed);
 }

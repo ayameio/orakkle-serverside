@@ -15,27 +15,34 @@ public class SignalController {
         return signalRepository.findAll();
     }
 
-    @GetMapping("/closed")
-    public @ResponseBody Iterable<Signal> getClosedSignals() {
-        return signalRepository.findByClosed(true);
-    }
-
-    @GetMapping("/closed/winners")
-    public @ResponseBody Iterable<Signal> getWinners() {
-        return signalRepository.findByWasSuccess(true);
-    }
-
-    @GetMapping("/closed/losers")
-    public @ResponseBody Iterable<Signal> getLosers() {
-        return signalRepository.findByWasSuccess(false);
-    }
-
     // Write query to get a signal with this id.
     @GetMapping("/signals/{id}")
     public @ResponseBody Optional<Signal> getSignal(@RequestParam(value = "id") long id) {
         Signal signal = signalRepository.findById(id);
         return Optional.ofNullable(signal);
     }
+
+    @GetMapping("/signals/live")
+    public @ResponseBody Iterable<Signal> getLiveSignals() {
+        return signalRepository.findByClosed(false);
+    }
+
+    @GetMapping("/signals/closed")
+    public @ResponseBody Iterable<Signal> getClosedSignals() {
+        return signalRepository.findByClosed(true);
+    }
+
+    @GetMapping("/signals/closed/winners")
+    public @ResponseBody Iterable<Signal> getWinners() {
+        return signalRepository.findByWasSuccessful(true);
+    }
+
+    @GetMapping("/signals/closed/losers")
+    public @ResponseBody Iterable<Signal> getLosers() {
+        return signalRepository.findByWasSuccessful(false);
+    }
+
+
     // Write query to post signal.
     @PostMapping("/signals")
     public @ResponseBody Signal postSignal(
