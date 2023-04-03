@@ -12,5 +12,4 @@ public interface SignalRepository extends PagingAndSortingRepository<Signal, Lon
     Signal findById(long id);
     List<Signal> findByWasSuccess(boolean wasSuccess);
     List<Signal> findByClosed(boolean closed);
-    void postSignal(Signal signal);
 }

@@ -3,6 +3,8 @@ package dev.ayameio.orakkle.backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class SignalController {
     @Autowired
@@ -30,13 +32,13 @@ public class SignalController {
 
     // Write query to get a signal with this id.
     @GetMapping("/signals/{id}")
-    public @ResponseBody Signal getSignal(@RequestParam(value = "id") long id) {
-        return signalRepository.findById(id);
+    public @ResponseBody Optional<Signal> getSignal(@RequestParam(value = "id") long id) {
+        Signal signal = signalRepository.findById(id);
+        return Optional.ofNullable(signal);
     }
-
     // Write query to post signal.
     @PostMapping("/signals")
-    public @ResponseBody void postSignal(
+    public @ResponseBody Signal postSignal(
            @RequestParam Long id,
            @RequestParam Long unixTime,
            @RequestParam String asset,
@@ -46,7 +48,7 @@ public class SignalController {
            @RequestParam boolean closed,
            @RequestParam boolean wasSuccess
     ) {
-        signalRepository.postSignal(
+        return signalRepository.save(
           new Signal(id, unixTime, asset, entryPrice, takeProfit, stopLoss, closed, wasSuccess)
         );
     }
