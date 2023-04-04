@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.Optional;
 
 @RestController
 public class SignalController {
@@ -22,8 +21,14 @@ public class SignalController {
         return signalRepository.findAll();
     }
 
+    @GetMapping("/signals/{asset}")
+    public @ResponseBody Iterable<Signal> getAllByAsset(@PathVariable String asset) {
+        log.info("GET:: Get all signals of specific asset at /signals/{asset} endpoint");
+        return signalRepository.findByAsset(asset);
+    }
+
     @GetMapping("/signals/{id}")
-    public @ResponseBody Optional<Signal> getSignal(@PathVariable long id) {
+    public @ResponseBody Signal getSignal(@PathVariable long id) {
         log.info("GET:: Get specific signal at /signals/{id} endpoint");
         return signalRepository.findById(id);
     }
@@ -55,7 +60,13 @@ public class SignalController {
     @PostMapping("/signals")
     public @ResponseBody Signal postSignal(@RequestBody Signal signal) {
         signal.setUnixTime(Instant.now().getEpochSecond());
-        log.info("POST:: Post a new signal at /signals endpoint" + signal.toString());
+        log.info("POST:: Post a new signal at /signals endpoint" + signal);
         return signalRepository.save(signal);
+    }
+
+    @DeleteMapping
+    public @ResponseBody void deleteSignalById(@PathVariable long id) {
+        log.info("DELETE:: Delete specific signal at /signals/{id} endpoint");
+        signalRepository.deleteById(id);
     }
 }
