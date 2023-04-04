@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @RestController
 public class SignalController {
@@ -21,50 +22,50 @@ public class SignalController {
         return signalRepository.findAll();
     }
 
-    @GetMapping("/signals/{asset}")
+    @GetMapping("/signals/asset/{asset}")
     public @ResponseBody Iterable<Signal> getAllByAsset(@PathVariable String asset) {
         log.info("GET:: Get all signals of specific asset at /signals/{asset} endpoint");
         return signalRepository.findByAsset(asset);
     }
 
-    @GetMapping("/signals/{id}")
-    public @ResponseBody Signal getSignal(@PathVariable long id) {
+    @GetMapping("/signals/id/{id}")
+    public @ResponseBody Optional<Signal> getSignal(@PathVariable long id) {
         log.info("GET:: Get specific signal at /signals/{id} endpoint");
         return signalRepository.findById(id);
     }
 
-    @GetMapping("/signals/live")
+    @GetMapping("/signals/status/live")
     public @ResponseBody Iterable<Signal> getLiveSignals() {
         log.info("GET:: Get live signals at /signals/live endpoint");
         return signalRepository.findByClosed(false);
     }
 
-    @GetMapping("/signals/closed")
+    @GetMapping("/signals/status/closed")
     public @ResponseBody Iterable<Signal> getClosedSignals() {
         log.info("GET:: Get closed signals at /signals/closed endpoint");
         return signalRepository.findByClosed(true);
     }
 
-    @GetMapping("/signals/closed/winners")
+    @GetMapping("/signals/status/winners")
     public @ResponseBody Iterable<Signal> getWinners() {
         log.info("GET:: Get winner signals at /signals/closed/winners endpoint");
-        return signalRepository.findByWasSuccessful(true);
+        return signalRepository.findBySuccessful(true);
     }
 
-    @GetMapping("/signals/closed/losers")
+    @GetMapping("/signals/status/losers")
     public @ResponseBody Iterable<Signal> getLosers() {
         log.info("GET:: Get loser signals at /signals/closed/losers endpoint");
-        return signalRepository.findByWasSuccessful(false);
+        return signalRepository.findBySuccessful(false);
     }
 
-    @PostMapping("/signals")
+    @PostMapping("/signals/")
     public @ResponseBody Signal postSignal(@RequestBody Signal signal) {
         signal.setUnixTime(Instant.now().getEpochSecond());
         log.info("POST:: Post a new signal at /signals endpoint" + signal);
         return signalRepository.save(signal);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/signals/{id}")
     public @ResponseBody void deleteSignalById(@PathVariable long id) {
         log.info("DELETE:: Delete specific signal at /signals/{id} endpoint");
         signalRepository.deleteById(id);

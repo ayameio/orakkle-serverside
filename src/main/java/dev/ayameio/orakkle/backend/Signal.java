@@ -1,40 +1,49 @@
 package dev.ayameio.orakkle.backend;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
 
-@Entity @Getter @Setter
+@Entity
 public class Signal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long unixTime;
     private String asset;
+    private String orderType;
     private String entryPrice;
     private String takeProfit;
     private String stopLoss;
     private boolean closed;
-    private boolean wasSuccessful;
+    private boolean successful;
 
     protected Signal() {}
 
     public Signal(
                   String asset,
+                  String orderType,
                   String entryPrice,
                   String takeProfit,
                   String stopLoss,
                   boolean closed,
-                  boolean wasSuccessful) {
+                  boolean successful) {
         this.unixTime = Instant.now().getEpochSecond();
         this.asset = asset;
+        this.orderType = orderType;
         this.entryPrice = entryPrice;
         this.takeProfit = takeProfit;
         this.stopLoss = stopLoss;
         this.closed = closed;
-        this.wasSuccessful = wasSuccessful;
+        this.successful = successful;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 
     public Long getId() {
@@ -93,12 +102,12 @@ public class Signal {
         this.closed = closed;
     }
 
-    public boolean isWasSuccessful() {
-        return wasSuccessful;
+    public boolean isSuccessful() {
+        return successful;
     }
 
-    public void setWasSuccessful(boolean wasSuccessful) {
-        this.wasSuccessful = wasSuccessful;
+    public void setSuccessful(boolean successful) {
+        this.successful = successful;
     }
 
     @Override
@@ -107,11 +116,12 @@ public class Signal {
                 "id=" + id +
                 ", unixTime=" + unixTime +
                 ", asset='" + asset + '\'' +
+                ", orderType='" + orderType + '\'' +
                 ", entryPrice='" + entryPrice + '\'' +
                 ", takeProfit='" + takeProfit + '\'' +
                 ", stopLoss='" + stopLoss + '\'' +
                 ", closed=" + closed +
-                ", wasSuccess=" + wasSuccessful +
+                ", successful=" + successful +
                 '}';
     }
 }
