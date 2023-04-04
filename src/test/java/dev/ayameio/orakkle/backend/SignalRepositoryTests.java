@@ -23,6 +23,8 @@ public class SignalRepositoryTests {
             new Signal("muln","buyLimit", "1.20000", "1.21000", "1.19000", false, false)
     );
 
+    Signal dummySignal = new Signal("eurusd","buyStop", "1.20000", "1.21000", "1.19000", false, false);
+
     @Autowired
     private SignalRepository repository;
 
@@ -32,28 +34,15 @@ public class SignalRepositoryTests {
     @Test
     public void injectedComponentsAreNotNull() {
         assertThat(repository).isNotNull();
-    }
-
-    @Test
-    public void shouldSaveASignal() {
-        Signal signal = new Signal("eurusd","buyStop", "1.20000", "1.21000", "1.19000", false, false);
-
-        assertThat(signal.getAsset()).isEqualTo("eurusd");
-        assertThat(signal.getOrderType()).isEqualTo("buyStop");
-        assertThat(signal.getEntryPrice()).isEqualTo( "1.20000");
-        assertThat(signal.getTakeProfit()).isEqualTo("1.21000");
-        assertThat(signal.getStopLoss()).isEqualTo("1.19000");
-        assertThat(signal.isClosed()).isEqualTo(false);
-        assertThat(signal.isSuccessful()).isEqualTo(false);
+        assertThat(testEntityManager).isNotNull();
     }
 
     @Test
     public void shouldFindSignalById() {
-        Signal signal = new Signal("eurusd","buyStop", "1.20000", "1.21000", "1.19000", false, false);
 
-        long signalId = testEntityManager.persist(signal).getId();
+        long signalId = testEntityManager.persist(dummySignal).getId();
 
-        testEntityManager.persistAndFlush(signal);
+        testEntityManager.persistAndFlush(dummySignal);
         testEntityManager.clear();
 
         Optional<Signal> storedSignal = repository.findById(signalId);
@@ -63,9 +52,8 @@ public class SignalRepositoryTests {
 
     @Test
     public void shouldDeleteSignalById() {
-        Signal signal = new Signal("eurusd","buyStop", "1.20000", "1.21000", "1.19000", false, false);
 
-        long signalId = testEntityManager.persist(signal).getId();
+        long signalId = testEntityManager.persist(dummySignal).getId();
 
         repository.deleteById(signalId);
 
